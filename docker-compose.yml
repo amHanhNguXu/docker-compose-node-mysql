@@ -1,0 +1,25 @@
+version: '3.3'
+
+services:
+  node: 
+    build: .
+    # entrypoint: run-nodock "node index.js"
+    tty: true
+    # command: sh -c './wait-for db:3306 -- node server.js'
+    restart: "always"
+    depends_on:
+      - mysql
+    ports:
+      - "8000:8000"
+  
+  mysql:
+    build:
+      context: ./db
+      args:
+        - MYSQL_DATABASE=default_database
+        - MYSQL_USER=default_user
+        - MYSQL_PASSWORD=secret
+        - MYSQL_ROOT_PASSWORD=root
+      # ports:
+      #   - "3306"
+      # tty: true
